@@ -15,7 +15,7 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:zfj@123@127.0.0.1:13306/flaskOps'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://user:password@server:port/db'
 
 
 config = {
