@@ -27,6 +27,6 @@ class DataCenter(db.Model):
             "bind_width": self.bind_width,
         }
 
-    def update(self, **kwargs):
-        for key, value in kwargs.items():
-            setattr(self, key, value)
+        # def update(self, **kwargs):
+        #     for key, value in kwargs.items():
+        #         setattr(self, key, value)

@@ -20,16 +20,23 @@ class InfoFilter(logging.Filter):
 
 
 class Config:
+    # 连接数据库配置 mysql
     SECRET_KEY = os.environ.get("SECRET_KEY") or '0i@lri)9v81y**w!41(&0&8ol#14@d_6fu12-#5)1xatgu5b^8'
     SQLALCHEMY_COMMIT_ON_TEARDOWW = True
+    # 日志配置
     LOG_PATH = os.path.join(basedir, "logs")
     LOG_PATH_ERROR = os.path.join(LOG_PATH, "error.log")
     LOG_PATH_INFO = os.path.join(LOG_PATH, "info.log")
     LOG_FILE_MAX_BYTES = 20 * 1024 * 1024
     LOG_FILE_BACK_COUNT = 5
+    # celery配置
+    CELERY_BROKER_URL = 'redis://10.100.14.95:6379/2'
+    CELERY_RESULT_BACKEND = 'redis://10.100.14.95:6379/2'
+    CELERY_TASK_SERIALIZER = 'json'
+    REDIS_URL = "redis://10.100.14.95:6379/0"
 
-    @staticmethod
-    def init_app(app):
+    @classmethod
+    def init_app(cls, app):
         pass
 
 
@@ -41,7 +48,6 @@ class DevelopmentConfig(Config):
 
     @classmethod
     def init_app(cls, app):
-        Config.init_app(app)
         import logging
         from logging.handlers import RotatingFileHandler
         formatter = logging.Formatter('%(asctime)s %(levelname)s %(process)d %(thread)d %(funcName)s %(pathname)s %(lineno)s %(message)s')
@@ -57,6 +63,6 @@ class DevelopmentConfig(Config):
         app.logger.addHandler(file_handler_error)
 
 
-config = {
+baseConfig = {
     'default': DevelopmentConfig
 }

@@ -1,8 +1,9 @@
 from flask import jsonify, request, json
 from manage import logger
-from app import db
+from app import db, redis_store
 from . import rsc
 from .models import DataCenter
+from tasks import send_msg
 
 
 @rsc.route("/")
@@ -12,6 +13,9 @@ def index():
 
 @rsc.route("/list/<name>", methods=["GET"])
 def list(name):
+    logger.info("bbbbbbbbbbbbbbbbbbbb")
+    send_msg.delay(1, 2)
+    redis_store.set('name', 'zfj')
     item_list = [item._to_dict() for item in DataCenter.query.all()]
     return jsonify({"status": 0, "item_list": item_list})
 
@@ -32,7 +36,7 @@ def update():
     params = json.loads(data)
     id = params.get("id")
     params.pop("id")
-    DataCenter.query.filter(DataCenter.id == id).first().update(**params)
+    DataCenter.query.filter_by(id=id).update(params)
     db.session.commit()
     return jsonify({"status": 0})
 
