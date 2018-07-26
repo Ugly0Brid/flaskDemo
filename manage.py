@@ -6,6 +6,7 @@ from app.rsc import models as rsc_models
 from app.auth import models as auth_models
 
 app = create_app('default')
+logger = app.logger
 manager = Manager(app)
 migrate = Migrate(app, db)
 
